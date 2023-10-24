@@ -11,7 +11,8 @@ model User {
   id              String    @id @default(uuid())
   firstName       String
   lastName        String
-  username        String
+  username        String    @unique // O nome de usuário é único (@usuario)
+  email           String    @unique // O mesmo e-mail não pode ser repetido
   dob             DateTime?
   status          String?
   pfp             String?
@@ -20,7 +21,10 @@ model User {
   deletedAt       DateTime?
   allowPublicName Boolean   @default(true)
   allowPublicDob  Boolean   @default(true)
-  
+
+  sentFriendRequests     Friend[] @relation("SenderRelation") // Relação 1-N: Um usuário pode enviar várias solicitações de amizade
+  receivedFriendRequests Friend[] @relation("ReceiverRelation") // Relação 1-N: Um usuário pode receber várias solicitações de amizade
+
   posts       Post[]    // Relação 1-N: Um usuário pode ter várias postagens
   likes       PostLike[] // Relação 1-N: Um usuário pode dar vários likes
   comments    PostComment[] // Relação 1-N: Um usuário pode fazer vários comentários
@@ -29,12 +33,14 @@ model User {
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  userId      String
-  content     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id            String    @id @default(uuid())
+  userId        String
+  content       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  allowComments Boolean   @default(true)
+  allowLikes    Boolean   @default(true)
   
   user        User      @relation(fields: [userId], references: [id]) // Relação 1-1: Cada postagem pertence a um usuário
   photos      PostPhoto[] // Relação 1-N: Uma postagem pode ter várias fotos
@@ -86,3 +92,17 @@ model PostComment {
   @@map("post_comments")
 }
 
+model Friend {
+  id          String    @id @default(uuid())
+  senderId    String
+  receiverId  String
+  accepted    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  sender      User      @relation("SenderRelation", fields: [senderId], references: [id]) // Relação 1-1: Cada solicitação de amizade é enviada por um usuário
+  receiver    User      @relation("ReceiverRelation", fields: [receiverId], references: [id]) // Relação 1-1: Cada solicitação de amizade é recebida por um usuário
+
+  @@map("friends")
+}
