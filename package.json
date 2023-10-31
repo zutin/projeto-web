@@ -1,10 +1,10 @@
 {
   "name": "projeto-web",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Rede social com foco em jogos para a disciplina de Desenvolvimento Web II - IFSP Campus Caraguatatuba",
+  "author": "Gian Lucca, Eduardo Luiz",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
@@ -23,7 +23,9 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.14",
     "@prisma/client": "^5.5.0",
+    "dotenv": "^16.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },

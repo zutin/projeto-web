@@ -13,6 +13,7 @@ model User {
   lastName        String
   username        String    @unique // O nome de usuário é único (@usuario)
   email           String    @unique // O mesmo e-mail não pode ser repetido
+  password        String
   dob             DateTime?
   status          String?
   pfp             String?
