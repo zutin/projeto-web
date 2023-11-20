@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Param, Body, Put, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Param, Body, Put, Delete, UseGuards } from '@nestjs/common'
 import { FindUserUseCase } from '../usecases/findUser/findUser.useCase'
 import { CreateUserUseCase } from '../usecases/createUser/createUser.useCase'
 import { UpdateUserNameUseCase, UpdateUserStatusUseCase, UpdateUserPfpUseCase, UpdateUserPasswordUseCase, UpdateUserEmailUseCase } from '../usecases/updateUser/updateUser.useCase'
 import { DeleteUserUseCase } from '../usecases/deleteUser/deleteUser.useCase'
 import { CreateUserRequest } from '../usecases/createUser/createUser.dto'
 import { UpdateUserNameRequest, UpdateUserStatusRequest, UpdateUserPfpRequest, UpdateUserPasswordRequest, UpdateUserEmailRequest } from '../usecases/updateUser/updateUser.dto'
-import { ApiAcceptedResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiResponse } from '@nestjs/swagger'
+import { ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger'
+import { JwtAuthGuard } from '@/apps/auth/src/configuration/jwt-auth.guard'
 
-@Controller()
+@UseGuards(JwtAuthGuard)
+@Controller('users')
+
 export class UsersController {
   constructor(
       private findUserUseCase: FindUserUseCase,

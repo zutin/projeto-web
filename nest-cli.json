@@ -37,13 +37,13 @@
         "tsConfigPath": "apps/posts/tsconfig.app.json"
       }
     },
-    "friends": {
+    "auth": {
       "type": "application",
-      "root": "apps/friends",
+      "root": "apps/auth",
       "entryFile": "main",
-      "sourceRoot": "apps/friends/src",
+      "sourceRoot": "apps/auth/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/friends/tsconfig.app.json"
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     }
   }

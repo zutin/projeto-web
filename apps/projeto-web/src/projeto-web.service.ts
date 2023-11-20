@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class FriendsService {
+export class ProjetoWebService {
   getHello(): string {
-    return 'Friends service!';
+    return 'Hello World!';
   }
 }
