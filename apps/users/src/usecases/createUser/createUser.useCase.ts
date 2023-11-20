@@ -58,7 +58,8 @@ export class CreateUserUseCase {
             } else {
                 return {
                     code: 201,
-                    message: "User created successfully"
+                    message: "User created successfully",
+                    id: user.id
                 }
             }
         } catch (error) {

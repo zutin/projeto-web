@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/libs/utils/database/PrismaService';
-import { UpdateUserRequest, UpdateUserResponse } from './updateUser.dto';
+import { UpdateUserNameRequest, UpdateUserStatusRequest, UpdateUserPfpRequest, UpdateUserPasswordRequest, UpdateUserEmailRequest, UpdateUserResponse } from './updateUser.dto';
 
 @Injectable()
-export class UpdateUserUseCase {
+export class UpdateUserNameUseCase {
 
     constructor(private prisma: PrismaService) {}
 
-    async execute(id: string, data: UpdateUserRequest): Promise<UpdateUserResponse> {
+    async execute(id: string, data: UpdateUserNameRequest): Promise<UpdateUserResponse> {
         const checkUser = await this.prisma.user.findFirst({
             where: {
                 id: id,
@@ -17,37 +17,203 @@ export class UpdateUserUseCase {
         if(checkUser == null){
             return {
                 code: 400,
-                message: "User does not exist"
+                message: "User not found"
             }
         }
 
-        if (data.username != undefined) {
-            const checkUsername = await this.prisma.user.findFirst({
+        try {
+            const user = await this.prisma.user.update({
                 where: {
-                username: data.username,
+                id: id,
                 },
+                data
             })
 
-            if(checkUsername != null && checkUsername.id != id){
+            if (user == null) {
                 return {
-                    code: 400,
-                    message: "Username already exists"
+                    code: 500,
+                    message: "Internal server error"
                 }
+            } else {
+                return {
+                    code: 200,
+                    message: "User updated successfully"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                code: 500,
+                message: "Internal server error"
+            }
+        }
+    }
+
+}
+
+@Injectable()
+export class UpdateUserStatusUseCase {
+
+    constructor(private prisma: PrismaService) {}
+
+    async execute(id: string, data: UpdateUserStatusRequest): Promise<UpdateUserResponse> {
+        const checkUser = await this.prisma.user.findFirst({
+            where: {
+                id: id,
+            }
+        })
+
+        if(checkUser == null){
+            return {
+                code: 400,
+                message: "User not found"
             }
         }
 
-        if (data.email != undefined) {
-            const checkEmail = await this.prisma.user.findFirst({
+        try {
+            const user = await this.prisma.user.update({
                 where: {
-                email: data.email,
-                }
+                id: id,
+                },
+                data
             })
 
-            if(checkEmail != null && checkEmail.id != id){
+            if (user == null) {
                 return {
-                    code: 400,
-                    message: "Email already exists"
+                    code: 500,
+                    message: "Internal server error"
                 }
+            } else {
+                return {
+                    code: 200,
+                    message: "User updated successfully"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                code: 500,
+                message: "Internal server error"
+            }
+        }
+    }
+
+}
+
+@Injectable()
+export class UpdateUserPfpUseCase {
+
+    constructor(private prisma: PrismaService) {}
+
+    async execute(id: string, data: UpdateUserPfpRequest): Promise<UpdateUserResponse> {
+        const checkUser = await this.prisma.user.findFirst({
+            where: {
+                id: id,
+            }
+        })
+
+        if(checkUser == null){
+            return {
+                code: 400,
+                message: "User not found"
+            }
+        }
+
+        try {
+            const user = await this.prisma.user.update({
+                where: {
+                id: id,
+                },
+                data
+            })
+
+            if (user == null) {
+                return {
+                    code: 500,
+                    message: "Internal server error"
+                }
+            } else {
+                return {
+                    code: 200,
+                    message: "User updated successfully"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                code: 500,
+                message: "Internal server error"
+            }
+        }
+    }
+
+}
+
+@Injectable()
+export class UpdateUserPasswordUseCase {
+
+    constructor(private prisma: PrismaService) {}
+
+    async execute(id: string, data: UpdateUserPasswordRequest): Promise<UpdateUserResponse> {
+        const checkUser = await this.prisma.user.findFirst({
+            where: {
+                id: id,
+            }
+        })
+
+        if(checkUser == null){
+            return {
+                code: 400,
+                message: "User not found"
+            }
+        }
+
+        try {
+            const user = await this.prisma.user.update({
+                where: {
+                id: id,
+                },
+                data
+            })
+
+            if (user == null) {
+                return {
+                    code: 500,
+                    message: "Internal server error"
+                }
+            } else {
+                return {
+                    code: 200,
+                    message: "User updated successfully"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                code: 500,
+                message: "Internal server error"
+            }
+        }
+    }
+
+}
+
+@Injectable()
+export class UpdateUserEmailUseCase {
+
+    constructor(private prisma: PrismaService) {}
+
+    async execute(id: string, data: UpdateUserEmailRequest): Promise<UpdateUserResponse> {
+        const checkUser = await this.prisma.user.findFirst({
+            where: {
+                id: id,
+            }
+        })
+
+        if(checkUser == null){
+            return {
+                code: 400,
+                message: "User not found"
             }
         }
 

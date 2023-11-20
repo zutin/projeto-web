@@ -14,21 +14,13 @@ model User {
   username        String    @unique // O nome de usuário é único (@usuario)
   email           String    @unique // O mesmo e-mail não pode ser repetido
   password        String
-  dob             DateTime?
   status          String?
   pfp             String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?
-  allowPublicName Boolean   @default(true)
-  allowPublicDob  Boolean   @default(true)
-
-  sentFriendRequests     Friend[] @relation("SenderRelation") // Relação 1-N: Um usuário pode enviar várias solicitações de amizade
-  receivedFriendRequests Friend[] @relation("ReceiverRelation") // Relação 1-N: Um usuário pode receber várias solicitações de amizade
 
   posts       Post[]    // Relação 1-N: Um usuário pode ter várias postagens
-  likes       PostLike[] // Relação 1-N: Um usuário pode dar vários likes
-  comments    PostComment[] // Relação 1-N: Um usuário pode fazer vários comentários
   
   @@map("users")
 }
@@ -40,70 +32,8 @@ model Post {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
-  allowComments Boolean   @default(true)
-  allowLikes    Boolean   @default(true)
   
   user        User      @relation(fields: [userId], references: [id]) // Relação 1-1: Cada postagem pertence a um usuário
-  photos      PostPhoto[] // Relação 1-N: Uma postagem pode ter várias fotos
-  likes       PostLike[] // Relação 1-N: Uma postagem pode ter vários likes
-  comments    PostComment[] // Relação 1-N: Uma postagem pode ter vários comentários
   
   @@map("posts")
-}
-
-model PostPhoto {
-  id          String    @id @default(uuid())
-  postId      String
-  url         String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  
-  post        Post      @relation(fields: [postId], references: [id]) // Relação 1-1: Cada foto de postagem pertence a uma postagem
-  
-  @@map("post_photos")
-}
-
-model PostLike {
-  id          String    @id @default(uuid())
-  postId      String
-  userId      String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  
-  post        Post      @relation(fields: [postId], references: [id]) // Relação 1-1: Cada like está associado a uma postagem
-  user        User      @relation(fields: [userId], references: [id]) // Relação 1-1: Cada like é dado por um usuário
-  
-  @@map("post_likes")
-}
-
-model PostComment {
-  id          String    @id @default(uuid())
-  postId      String
-  userId      String
-  content     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  
-  post        Post      @relation(fields: [postId], references: [id]) // Relação 1-1: Cada comentário está associado a uma postagem
-  user        User      @relation(fields: [userId], references: [id]) // Relação 1-1: Cada comentário é feito por um usuário
-  
-  @@map("post_comments")
-}
-
-model Friend {
-  id          String    @id @default(uuid())
-  senderId    String
-  receiverId  String
-  accepted    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-
-  sender      User      @relation("SenderRelation", fields: [senderId], references: [id]) // Relação 1-1: Cada solicitação de amizade é enviada por um usuário
-  receiver    User      @relation("ReceiverRelation", fields: [receiverId], references: [id]) // Relação 1-1: Cada solicitação de amizade é recebida por um usuário
-
-  @@map("friends")
 }
