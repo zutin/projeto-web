@@ -11,7 +11,7 @@ import { UsersModule } from '@/apps/users/src/users.module';
 export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
 
 @Module({
-  imports: [PassportModule, UsersModule,
+  imports: [PassportModule,
     JwtModule.register({
       secret: jwtSecret,
       signOptions: { expiresIn: '1h' },
