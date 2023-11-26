@@ -1,51 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '@/libs/utils/database/PrismaService';
-import { LoginAttemptRequest, LoginAttemptResponse } from './auth.dto';
-import { UserEntity } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import { AuthEntity, LoginAttemptRequest } from './auth.dto';
 
 @Injectable()
+
 export class AuthService {
     constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-    async validateUser(loginAttemptRequest: LoginAttemptRequest): Promise<LoginAttemptResponse> {
-        const user = await this.prisma.user.findFirst({
-            where: {
-                username: loginAttemptRequest.username,
-            }
-        })
+    async login(loginAttemptRequest: LoginAttemptRequest): Promise<AuthEntity> {
+        // Step 1: Fetch a user with the given email
+        const user = await this.prisma.user.findUnique({ where: { username: loginAttemptRequest.username } });
 
-        if(user != null){
-            // const passwordMatch = await bcrypt.compare(loginAttemptRequest.password, user.password);
-            const passwordMatch = loginAttemptRequest.password == user.password;
-
-            console.log(passwordMatch)
-
-            if(passwordMatch){
-                return {
-                    code: 200,
-                    message: "Login successful",
-                    user: { ...user }
-                }
-            } else {
-                return {
-                    code: 400,
-                    message: "Incorrect password",
-                }
-            }
-        } else {
-            return {
-                code: 404,
-                message: "User not found",
-            }
+        // If no user is found, throw an error
+        if (!user) {
+            throw new NotFoundException(`No user with username '${loginAttemptRequest.username}' found.`);
         }
-    }
 
-    async login(user: UserEntity) {
-        const payload = { sub: user.id, username: user.username };
+        // Step 2: Check if the password is correct
+        const isPasswordValid = user.password === loginAttemptRequest.password;
+
+        // If password does not match, throw an error
+        if (!isPasswordValid) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        // Step 3: Generate a JWT containing the user's ID and return it
         return {
-            access_token: this.jwtService.sign(payload),
+            token: this.jwtService.sign({ userId: user.id }),
         };
     }
 }

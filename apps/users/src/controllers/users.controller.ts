@@ -5,10 +5,11 @@ import { UpdateUserNameUseCase, UpdateUserStatusUseCase, UpdateUserPfpUseCase, U
 import { DeleteUserUseCase } from '../usecases/deleteUser/deleteUser.useCase'
 import { CreateUserRequest } from '../usecases/createUser/createUser.dto'
 import { UpdateUserNameRequest, UpdateUserStatusRequest, UpdateUserPfpRequest, UpdateUserPasswordRequest, UpdateUserEmailRequest } from '../usecases/updateUser/updateUser.dto'
-import { ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger'
+import { ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger'
 import { JwtAuthGuard } from '@/apps/auth/src/configuration/jwt-auth.guard'
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @Controller('users')
 
 export class UsersController {
@@ -22,8 +23,6 @@ export class UsersController {
       private updateUserEmailUseCase: UpdateUserEmailUseCase,
       private deleteUserUseCase: DeleteUserUseCase
     ) {}
-
-  //Pode ser uma coisa interessante tipar a saída daqui também, mas já está sendo tipado dentro do UseCase :)
 
   @Get('/find/:id?')
   @ApiParam({ name: 'id', required: false, example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
