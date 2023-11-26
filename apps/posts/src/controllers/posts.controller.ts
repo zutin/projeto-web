@@ -5,15 +5,17 @@ import { UpdatePostUseCase } from '../usecases/updatePost/updatePost.useCase';
 import { DeletePostUseCase } from '../usecases/deletePost/deletePost.useCase';
 import { CreatePostRequest } from '../usecases/createPost/createPost.dto';
 import { UpdatePostRequest } from '../usecases/updatePost/updatePost.dto';
+import { FindAllPostUseCase } from '../usecases/findAllPost/findAllPost.useCase';
 import { ApiAcceptedResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller()
 export class PostsController {
   constructor(
-      private findPostUseCase: FindPostUseCase,
-      private createPostUseCase: CreatePostUseCase,
-      private updatePostUseCase: UpdatePostUseCase,
-      private deletePostUseCase: DeletePostUseCase
+    private findPostUseCase: FindPostUseCase,
+    private createPostUseCase: CreatePostUseCase,
+    private updatePostUseCase: UpdatePostUseCase,
+    private deletePostUseCase: DeletePostUseCase,
+    private findAllPostUseCase: FindAllPostUseCase
     ) {}
 
   //Pode ser uma coisa interessante tipar a saída daqui também, mas já está sendo tipado dentro do UseCase :)
@@ -25,6 +27,14 @@ export class PostsController {
   @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
   async findPost(@Param('id') id?: string) {
     return this.findPostUseCase.execute(id);
+  }
+
+  @Get()
+  @ApiOkResponse({ status: 200, description: 'Returns all posts' })
+  @ApiNotFoundResponse({ status: 400, description: 'Post not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
+  async findAllPosts() {
+    return this.findAllPostUseCase.execute();
   }
 
   @Post()

@@ -10,7 +10,7 @@ export class FindPostUseCase{
         if(id != undefined){
             const checkPost = await this.prisma.post.findFirst({
                 where: {
-                    id: id,
+                    userId: id,
                 }
             })
 
@@ -25,7 +25,7 @@ export class FindPostUseCase{
             try {
                 const post = await this.prisma.post.findFirst({
                     where: {
-                        id: id,
+                        userId: id,
                     },
                     select: {
                         id: true,

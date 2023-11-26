@@ -34,14 +34,11 @@ export class FindUserUseCase {
                         lastName: true,
                         username: true,
                         email: true,
-                        dob: true,
                         status: true,
                         pfp: true,
                         createdAt: true,
                         updatedAt: true,
-                        deletedAt: true,
-                        allowPublicName: true,
-                        allowPublicDob: true
+                        deletedAt: true
                     }
                 })
 
@@ -75,14 +72,11 @@ export class FindUserUseCase {
                         lastName: true,
                         username: true,
                         email: true,
-                        dob: true,
                         status: true,
                         pfp: true,
                         createdAt: true,
                         updatedAt: true,
-                        deletedAt: true,
-                        allowPublicName: true,
-                        allowPublicDob: true
+                        deletedAt: true
                     }
                 })
 
