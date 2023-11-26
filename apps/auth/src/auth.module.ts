@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '@/libs/utils/database/PrismaService';
 import { JwtStrategy } from './configuration/jwt.strategy';
-import { UsersModule } from '@/apps/users/src/users.module';
+import { AuthUserUseCase } from '../usecases/authUser/authUser.useCase';
 
 export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
 
@@ -18,6 +18,6 @@ export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
     }),
   ],
   controllers: [AuthController],
-  providers: [PrismaService, AuthService, JwtStrategy],
+  providers: [PrismaService, AuthService, JwtStrategy, AuthUserUseCase],
 })
 export class AuthModule {}
