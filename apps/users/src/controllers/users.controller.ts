@@ -8,7 +8,6 @@ import { UpdateUserNameRequest, UpdateUserStatusRequest, UpdateUserPfpRequest, U
 import { ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger'
 import { JwtAuthGuard } from '@/apps/auth/src/configuration/jwt-auth.guard'
 
-@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @Controller('users')
 
@@ -24,15 +23,6 @@ export class UsersController {
       private deleteUserUseCase: DeleteUserUseCase
     ) {}
 
-  @Get('/find/:id?')
-  @ApiParam({ name: 'id', required: false, example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
-  @ApiOkResponse({ status: 200, description: 'Returns all users if no id is provided, otherwise returns the user with the provided id' })
-  @ApiNotFoundResponse({ status: 400, description: 'User not found' })
-  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
-  async findUser(@Param('id') id?: string) {
-    return this.findUserUseCase.execute(id);
-  }
-
   @Post('/create')
   @ApiCreatedResponse({ status: 201, description: 'User created successfully' })
   @ApiNotFoundResponse({ status: 400, description: 'Username, Password and/or Email is missing' })
@@ -43,6 +33,17 @@ export class UsersController {
     return this.createUserUseCase.execute(data);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('/find/:id?')
+  @ApiParam({ name: 'id', required: false, example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
+  @ApiOkResponse({ status: 200, description: 'Returns all users if no id is provided, otherwise returns the user with the provided id' })
+  @ApiNotFoundResponse({ status: 400, description: 'User not found' })
+  @ApiInternalServerErrorResponse({ status: 500, description: 'Internal server error' })
+  async findUser(@Param('id') id?: string) {
+    return this.findUserUseCase.execute(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Put('/update/:id/name')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiOkResponse({ status: 200, description: 'User name updated successfully' })
@@ -51,6 +52,7 @@ export class UsersController {
     return this.updateUserNameUseCase.execute(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/update/:id/status')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiOkResponse({ status: 200, description: 'User status updated successfully' })
@@ -59,6 +61,7 @@ export class UsersController {
     return this.updateUserStatusUseCase.execute(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/update/:id/pfp')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiOkResponse({ status: 200, description: 'User profile picture updated successfully' })
@@ -67,6 +70,7 @@ export class UsersController {
     return this.updateUserPfpUseCase.execute(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/update/:id/password')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiOkResponse({ status: 200, description: 'User password updated successfully' })
@@ -75,6 +79,7 @@ export class UsersController {
     return this.updateUserPasswordUseCase.execute(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/update/:id/email')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiOkResponse({ status: 200, description: 'User email updated successfully' })
@@ -83,6 +88,7 @@ export class UsersController {
     return this.updateUserEmailUseCase.execute(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/destroy/:id')
   @ApiParam({ name: 'id', example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })
   @ApiNoContentResponse({ description: 'User deleted successfully' })

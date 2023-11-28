@@ -8,6 +8,7 @@ export const SwaggerConfig = (app: INestApplication) => {
         .setVersion('1.0')
         .addServer('/', 'Local environment')
         .addServer('/dev/', 'Development environment')
+        .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document);

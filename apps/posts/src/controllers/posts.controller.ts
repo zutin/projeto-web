@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Put, Delete} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Delete, UseGuards} from '@nestjs/common';
 import { FindPostUseCase } from '../usecases/findPost/findPost.useCase';
 import { CreatePostUseCase } from '../usecases/createPost/createPost.useCase';
 import { UpdatePostUseCase } from '../usecases/updatePost/updatePost.useCase';
@@ -6,9 +6,13 @@ import { DeletePostUseCase } from '../usecases/deletePost/deletePost.useCase';
 import { CreatePostRequest } from '../usecases/createPost/createPost.dto';
 import { UpdatePostRequest } from '../usecases/updatePost/updatePost.dto';
 import { FindAllPostUseCase } from '../usecases/findAllPost/findAllPost.useCase';
-import { ApiAcceptedResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@/apps/auth/src/configuration/jwt-auth.guard';
 
-@Controller()
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@Controller('posts')
+
 export class PostsController {
   constructor(
     private findPostUseCase: FindPostUseCase,
@@ -17,8 +21,6 @@ export class PostsController {
     private deletePostUseCase: DeletePostUseCase,
     private findAllPostUseCase: FindAllPostUseCase
     ) {}
-
-  //Pode ser uma coisa interessante tipar a saída daqui também, mas já está sendo tipado dentro do UseCase :)
 
   @Get(':id?')
   @ApiParam({ name: 'id', required: false, example: '598f5184-e74a-40d2-a2e6-de97b739ff83' })

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/libs/utils/database/PrismaService';
-import { FindPostResponse,} from './findPost.dto';
+import { FindPostResponse } from './findPost.dto';
 
 @Injectable()
 export class FindPostUseCase{

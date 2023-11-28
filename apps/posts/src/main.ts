@@ -8,6 +8,6 @@ async function bootstrap() {
   // Starts listening for shutdown hooks
   SwaggerConfig(app);
   
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();
