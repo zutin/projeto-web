@@ -5,10 +5,10 @@ import { SwaggerConfig } from './configuration/swagger.config';
 async function bootstrap() {
   const app = await NestFactory.create(UsersModule);
 
-  // Starts listening for shutdown hooks
-  // app.enableShutdownHooks();
+  const port = process.env.PORT || 3000;
+  
   SwaggerConfig(app);
   
-  await app.listen(3001);
+  await app.listen(port, "0.0.0.0");
 }
 bootstrap();
