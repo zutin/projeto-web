@@ -41,10 +41,16 @@ export class FindPostUseCase{
                         data: null
                     }
                 } else {
+                    const postuser = await this.prisma.user.findFirst({
+                        where: {
+                            id: post.userId,
+                        }
+                    })
                     return {
                         code: 200,
                         message: "Post retrieved successfully",
-                        data: post
+                        data: post,
+                        user: postuser
                     }
                 }
             } catch (error) {

@@ -8,4 +8,5 @@ export class FindPostResponse {
     code: number
     message: string
     data: FindPostEntity | FindPostEntity[]
+    user?: any
 }
