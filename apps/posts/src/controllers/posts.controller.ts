@@ -9,8 +9,6 @@ import { FindAllPostUseCase } from '../usecases/findAllPost/findAllPost.useCase'
 import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/apps/auth/src/configuration/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @Controller('posts')
 
 export class PostsController {
