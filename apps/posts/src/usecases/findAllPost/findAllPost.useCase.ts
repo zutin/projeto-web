@@ -20,20 +20,29 @@ export class FindAllPostUseCase{
                     return {
                         code: 500,
                         message: "Internal server error",
-                        data: null
+                        data: null,
+                        user: null
                     }
                 } else {
+                    const user = await this.prisma.user.findFirst({
+                        where: {
+                            id: post[0].userId
+                        }
+                    })
+
                     return {
                         code: 200,
                         message: "Post retrieved successfully",
-                        data: post
+                        data: post,
+                        user: user
                     }
                 }
             } catch (error) {
                 return {
                     code: 500,
                     message: "Internal server error",
-                    data: null
+                    data: null,
+                    user: null
                 }
             }
         } 
